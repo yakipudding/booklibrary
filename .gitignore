@@ -24,3 +24,5 @@ yarn-error.log*
 
 # setting
 /.vscode
+/.firebase
+/src/config/fbConfig.js
