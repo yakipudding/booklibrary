@@ -17,18 +17,23 @@ class BookRental extends Component {
     this.state = {
       users: null,
       bookid: props.match.params.id,
-      userid: props.userid,
-      username: props.username,
-      isbncode: props.isbncode || 978,
-      jancode: props.jancode || 192,
+      lenderuserid: null,
+      lenderusername: null,
+      isbncode: null,
+      jancode: null,
+      bookname: null,
+      loading: true
     };
+  }
+
+  componentDidMount(props){
     // firestoreからusersを取得し、stateのusersに保存
     firestore.collection('users')
       .orderBy('username')
       .get()
-      .then(snapShot => {
+      .then(usersDoc => {
         let users = [];
-        snapShot.forEach(doc => {
+        usersDoc.forEach(doc => {
           users.push({
             id: doc.id,
             ...doc.data(),
@@ -46,25 +51,34 @@ class BookRental extends Component {
       .then(doc => {
         let book = doc.data()
         this.setState({
-          userid: book.lenderuserid,
-          username: book.lendername,
+          lenderuserid: book.lenderuserid,
+          lenderusername: book.lenderusername,
           isbncode: book.isbncode,
           jancode: book.jancode,
+          bookname: book.bookname,
+          loading: false
         });
       });
+    }
+    else{
+      this.setState({
+        loading: false
+      })
     }
   }
   
   //描画
   render() {
-    if (this.state.users && (this.state.bookid == null || this.state.bookid && this.state.isbncode != 978)){
+    if (this.state.users && !this.state.loading){
       return (
          <RentalInputField
             users={this.state.users}
-            userid={this.state.userid}
-            username={this.state.username}
+            bookid={this.state.bookid}
+            lenderuserid={this.state.lenderuserid}
+            lenderusername={this.state.lenderusername}
             isbncode={this.state.isbncode}
             jancode={this.state.jancode}
+            bookname={this.state.bookname}
           />
       );
     }

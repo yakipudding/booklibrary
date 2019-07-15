@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 // ナビゲーションバー
-function Navbar() {
+function Navbar(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const useStyles = makeStyles(theme => ({
@@ -27,7 +27,7 @@ function Navbar() {
     },
   }));
   const ITEM_HEIGHT = 48;
-  
+
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -35,30 +35,17 @@ function Navbar() {
   function handleClose() {
     setAnchorEl(null);
   }
-  
-  // ログイン
-  function login() {
-    const provider = new firebase.auth.GoogleAuthProvider()
-    // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-    // firebase.auth().useDeviceLanguage();
-    firebase.auth().signInWithPopup(provider).then(function(result) {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      var token = result.credential.accessToken;
-      // The signed-in user info.
-      var user = result.user;
-      // ...
-    }).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      // ...
-    });
-  };
 
+  //firebase サインアウト
+  function handleSignOut() {
+    firebase.auth().signOut();
+    // サインアウトするとrequireAuth内のfirebase.auth().onAuthStateChangedが発火
+  }
+
+  //firebase 認証状態に応じたリンク
+  const authlink = props.login 
+                      ? <Button color="inherit" onClick={handleSignOut}>SignOut</Button> 
+                      : <Button color="inherit" component={Link} to="/SignIn">SignIn</Button>;  
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -72,6 +59,7 @@ function Navbar() {
             aria-owns={open ? 'long-menu' : undefined}
             aria-haspopup="true"
             onClick={handleClick}
+            disabled={props.login ? false : true}
           >
             <MoreVertIcon />
           </IconButton>
@@ -92,7 +80,7 @@ function Navbar() {
           <Typography variant="h6" className={classes.title}>
             図書アプリ
           </Typography>
-          <Button color="inherit" onClick={login}>Login</Button>
+          {authlink}
         </Toolbar>
       </AppBar>
     </div>

@@ -11,13 +11,13 @@ class BookList extends Component {
         { title: '管理部門', field: 'department', lookup: { 0: '部署A', 1: '部署B' } },
         { title: '状態', field: 'lendable', lookup: { true: '貸出可能', false: '貸出中' } },
         { title: '書籍名', field: 'bookname' },
-        { title: '貸出人', field: 'lendername'},
+        { title: '貸出人', field: 'lenderusername'},
         { title: '貸出日', field: 'lenderdate', filtering: false},
       ]
   // debug:firebaseから取得したデータのダミー
   books_debug = [
-      { id: "6Gag8cuB5fH9cC4bp9i4", department: 0, lendable: false, bookname: '達人プログラマー', isbncode: 9784274219337, jancode: 1923055032002, lendername: '田中太郎', lenderdate: '2019/05/31' },
-      { id: "n7ymXgDRxjQQTEAtL51o", department: 1, lendable: true, bookname: '少女ファイト(1)', isbncode: 9784274219337, jancode: 1923055032002, lendername: '', lenderdate: null },
+      { id: "6Gag8cuB5fH9cC4bp9i4", department: 0, lendable: false, bookname: '達人プログラマー', isbncode: 9784274219337, jancode: 1923055032002, lenderusername: '田中太郎', lenderdate: '2019/05/31' },
+      { id: "n7ymXgDRxjQQTEAtL51o", department: 1, lendable: true, bookname: '少女ファイト(1)', isbncode: 9784274219337, jancode: 1923055032002, lenderusername: '', lenderdate: null },
     ]
 
   // コンストラクタ

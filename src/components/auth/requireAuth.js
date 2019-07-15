@@ -1,31 +1,48 @@
 import React, { Component } from "react";
 import firebase from '../../config/fbConfig'
-import NeedLogin from './NeedLogin'
+import Navbar from '../layout/Navbar'
+import SignIn from '../auth/SignIn'
+import BookList from '../ui/BookList'
 
 export default function(ComposedComponent) {
   class Authentication extends Component {
     // コンストラクタ
     constructor(props) {
       super(props);
-      this.state = {
-        user: ''
-      };
+      this.state = {login: false, loading: true}
     }
-
     componentDidMount(){
-      firebase.auth().onAuthStateChanged(user => {
-        this.setState({ user })
+      const changeState = this.onChangeState
+      // firebase ログインユーザ取得
+      firebase.auth().onAuthStateChanged(
+        (user) => {
+          // この中はthisが変わるのでthis.setState等は直接呼べないので注意
+          if (user) {
+            // sign in
+            changeState({login: true, loading: false})
+          }
+          else {
+            changeState({login: false, loading: false})
+          }
       });
+    }
+    onChangeState = (state) => {
+      this.setState(state);
     }
 
     render() {
-      // TODO: いったん認証を切っています
-      // if (this.state.user) {
-        return <ComposedComponent {...this.props} />;
-      // }
-      // else{
-      //   return <NeedLogin />
-      // }
+      if (this.state.loading) {
+        return null
+      }
+      else if (this.state.login && this.props.match.path === '/SignIn') {
+        return <div><Navbar login={true} /><BookList /></div>;
+      }
+      else if (this.state.login) {
+        return <div><Navbar login={true} /><ComposedComponent {...this.props} /></div>;
+      }
+      else{
+        return <div><Navbar login={false} /><SignIn /></div>;
+      }
     }
   }
 
