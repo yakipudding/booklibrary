@@ -76,6 +76,7 @@ function Navbar(props) {
             }}>
             <MenuItem component={Link} to="/" onClick={handleClose}>図書一覧</MenuItem>
             <MenuItem component={Link} to="/BookRental" onClick={handleClose}>図書レンタル</MenuItem>
+            <MenuItem component={Link} to="/BookListForAdmin" onClick={handleClose}>図書一覧（管理用）</MenuItem>
           </Menu>
           <Typography variant="h6" className={classes.title}>
             図書アプリ

@@ -12,7 +12,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-
+import AutoComplete from '../util/AutoComplete';
 import 'firebase/firestore'
 import { firestore } from '../../config/fbConfig'
 
@@ -52,6 +52,7 @@ function RentalInputField(props) {
     rentalmode: props.lenderuserid ? 'return' : 'rental',
     userid: props.lenderuserid || '',
     username: props.lenderusername || '',
+    selectedusername: props.lenderusername || '',
     isbncode: props.isbncode || '978',
     jancode: props.jancode || '192',
   });
@@ -247,7 +248,7 @@ function RentalInputField(props) {
           </FormControl>
         </Grid>
         <Grid item xs={9}>
-          <TextField
+          {/* <TextField
             id="select-username"
             select
             label="貸出人名"
@@ -264,7 +265,13 @@ function RentalInputField(props) {
                 {option.username}
               </MenuItem>
             ))}
-          </TextField>
+          </TextField> */}
+          <AutoComplete
+            users={values.users}
+            inputValue={values.username}
+            selectedItem={values.selectedusername}
+          >
+          </AutoComplete>
         </Grid>
         <Grid item xs={9}>
           <TextField
